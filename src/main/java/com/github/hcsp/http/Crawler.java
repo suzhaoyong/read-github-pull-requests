@@ -41,12 +41,10 @@ public class Crawler {
                 HttpEntity entity = response.getEntity();
                 String responseBody = EntityUtils.toString(entity);
                 JSON.parseArray(responseBody).forEach(j -> {
-                    String user = ((JSONObject) j).getJSONObject("user").toString();
-                    JSONObject username = JSONObject.parseObject(user);
                     result.add(new GitHubPullRequest(
                             ((JSONObject) j).getInteger("number"),
                             ((JSONObject) j).getString("title"),
-                            username.getString("login")
+                            ((JSONObject) j).getJSONObject("user").getString("login")
                     ));
                 });
                 EntityUtils.consume(entity);
